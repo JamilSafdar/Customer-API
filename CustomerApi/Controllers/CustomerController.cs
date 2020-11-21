@@ -24,9 +24,9 @@ namespace CustomerApi.Controllers
         //}
 
         [HttpPost]
-        public string Post(string title, string firstName, string surname, int age)
+        public string Post([FromBody] Customer customer)
         {
-            return $"Customer created: {title} {firstName} {surname} {age}";
+            return $"Customer created: {customer.title} {customer.firstName} {customer.surname} {customer.age}";
         }
 
         [HttpPost("{firstName}")]
@@ -48,5 +48,14 @@ namespace CustomerApi.Controllers
         {
             return $"Customer updated";
         }
+    }
+
+    public class Customer
+    {
+        public string firstName { get; private set; }
+        public string surname { get; set; }
+        public string title { get; set; }
+        public int age { get; set; }
+
     }
 }
