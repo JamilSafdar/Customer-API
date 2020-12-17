@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CustomerApi.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,9 +25,18 @@ namespace CustomerApi.Controllers
         //}
 
         [HttpPost]
-        public string Post([FromBody] Customer customer)
+        public IActionResult Post([FromBody] Customer customer)
         {
-            return $"Customer created: {customer.title} {customer.firstName} {customer.surname} {customer.age}";
+            if (customer.firstName == "")
+            {
+                var message = "Invalid Customer Forename given";
+                return new BadRequestObjectResult(message);
+            }
+            var customerRepo = new CustomerRepository();
+            customerRepo.Create(customer.firstName, customer.surname, customer.title, customer.age);
+
+            var message1 = $"Customer created: {customer.title} {customer.firstName} {customer.surname} {customer.age}";
+            return new OkObjectResult(message1);
         }
 
         [HttpPost("{firstName}")]
@@ -52,7 +62,7 @@ namespace CustomerApi.Controllers
 
     public class Customer
     {
-        public string firstName { get; private set; }
+        public string firstName { get; set; }
         public string surname { get; set; }
         public string title { get; set; }
         public int age { get; set; }
