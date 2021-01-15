@@ -12,10 +12,11 @@ namespace CustomerApi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        [HttpGet]
-        public string Get()
+        [HttpGet("{id}")]
+        public CustomerDetails Get(int id)
         {
-            return "Jamil";
+          var repo = new CustomerRepository();
+          return repo.Get(id);
         }
 
         //[HttpPost]
