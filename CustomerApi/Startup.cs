@@ -15,6 +15,8 @@ namespace CustomerApi
 {
     public class Startup
     {
+        private readonly string MyAllowSpecificOrigins = "MyPolicy";
+
         public const string AppS3BucketKey = "AppS3Bucket";
 
         public Startup(IConfiguration configuration)
@@ -27,6 +29,15 @@ namespace CustomerApi
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+
             services.AddControllers();
 
             // Add S3 to the ASP.NET Core dependency injection framework.
@@ -44,6 +55,8 @@ namespace CustomerApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
