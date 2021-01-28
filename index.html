@@ -39,10 +39,19 @@ function createCustomer() {
             console.log(xhttp);
             document.getElementById("response").innerHTML = xhttp.responseText;
             }
+            else {
+                console.log(xhttp);
+            }
         };
         xhttp.open("POST", "https://localhost:44380/api/Customer", false);
-        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");   
-        xhttp.send(JSON.stringify({ "firstName": "John", "surname": "Stones", "title": "Mr", "age": 30 }));
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        var title = document.getElementById("title").value;   
+        var firstName = document.getElementById("fname").value;
+        console.log(firstName);
+        var lastName = document.getElementById("lname").value;
+        var age = parseInt(document.getElementById("age").value);
+        
+        xhttp.send(JSON.stringify({ "firstName":firstName, "surname":lastName, "title": title, "age": age }));
     }
 
 </script>
